@@ -361,7 +361,7 @@ mixin KeyboardState implements IPlutoGridState {
       rowIdx = refRows.length - 1;
     }
 
-    if (currentCell == null) {
+    if (currentCell == null && !mode.isSelectMode) {
       return;
     }
 

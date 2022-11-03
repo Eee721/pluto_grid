@@ -173,15 +173,44 @@ class PlutoGridKeyManager {
       return;
     }
 
-    if (stateManager.currentCell == null) {
-      stateManager.setCurrentCell(stateManager.firstCell, 0);
+
+    if (stateManager.mode.isSelectMode) {
+      if (stateManager.currentCellPosition == null && stateManager.firstCell != null){
+        stateManager.clearCurrentSelecting(notify: false);
+        stateManager.toggleSelectingRow(0);
+        stateManager.setCurrentCellPosition(PlutoGridCellPosition(
+          rowIdx: 0,
+          columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(stateManager.firstCell!.key, 0),
+        ));
+        return;
+      }
+      var old = stateManager.currentCellPosition?.rowIdx;
+      var oldColumn = stateManager.currentCellPosition?.columnIdx;
+      if (old != null) {
+        stateManager.clearCurrentSelecting(notify: false);
+        stateManager.toggleSelectingRow(old + (moveDirection.vertical ? moveDirection.offset : 0));
+        stateManager.setCurrentCellPosition(PlutoGridCellPosition(
+          rowIdx: old + (moveDirection.vertical ? moveDirection.offset : 0),
+          columnIdx: oldColumn,
+        ));
+      }
       return;
     }
+
+
+    if (!stateManager.mode.isSelectMode) {
+      if (stateManager.currentCell == null) {
+        stateManager.setCurrentCell(stateManager.firstCell, 0);
+        return;
+      }
+    }
+
 
     stateManager.moveCurrentCell(moveDirection, force: force);
   }
 
   void _handleHomeEnd(PlutoKeyManagerEvent keyEvent) {
+    if (stateManager.mode.isSelectMode) return;
     if (keyEvent.isHome) {
       if (keyEvent.isCtrlPressed) {
         if (keyEvent.isShiftPressed) {
@@ -233,6 +262,8 @@ class PlutoGridKeyManager {
 
       return;
     }
+
+    if (stateManager.mode.isSelectMode) return;
 
     if (keyEvent.isAltPressed && stateManager.isPaginated) {
       final currentColumn = stateManager.currentColumn;
@@ -311,6 +342,7 @@ class PlutoGridKeyManager {
   }
 
   void _handleTab(PlutoKeyManagerEvent keyEvent) {
+    if (stateManager.mode.isSelectMode) return;
     if (stateManager.currentCell == null) {
       stateManager.setCurrentCell(stateManager.firstCell, 0);
       return;

@@ -171,6 +171,7 @@ class PlutoGridStyleConfig {
     this.oddRowColor,
     this.evenRowColor,
     this.activatedColor = const Color(0xFFDCF5FF),
+    this.selectedRowColor = const Color(0xFFECF5FF),
     this.checkedColor = const Color(0x11757575),
     this.cellColorInEditState = Colors.white,
     this.cellColorInReadOnlyState = const Color(0xFFDBDBDC),
@@ -227,6 +228,7 @@ class PlutoGridStyleConfig {
     this.oddRowColor,
     this.evenRowColor,
     this.activatedColor = const Color(0xFF313131),
+    this.selectedRowColor = const Color(0xFF414141),
     this.checkedColor = const Color(0x11202020),
     this.cellColorInEditState = const Color(0xFF666666),
     this.cellColorInReadOnlyState = const Color(0xFF222222),
@@ -311,6 +313,9 @@ class PlutoGridStyleConfig {
 
   /// Activated Color. (Current or Selected row, cell)
   final Color activatedColor;
+
+  // 选中的行颜色
+  final Color selectedRowColor;
 
   /// Checked Color. (Checked rows)
   final Color checkedColor;

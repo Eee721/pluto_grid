@@ -166,8 +166,37 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
         }
         break;
       case PlutoGridMode.multiSelect:
+        if (stateManager.keyPressed.shift) {
+          final int? columnIdx = stateManager.columnIndex(column);
+
+          stateManager.setCurrentSelectingPosition(
+            cellPosition: PlutoGridCellPosition(
+              columnIdx: columnIdx,
+              rowIdx: rowIdx,
+            ),
+          );
+          return ;
+        }
+
+        if (!stateManager.keyPressed.ctrl) {
+          stateManager.clearCurrentSelecting(notify: false);
+        }
+
+
+
         stateManager.toggleSelectingRow(rowIdx);
+        // stateManager.setCurrentSelectingPosition(
+        //   cellPosition: PlutoGridCellPosition(
+        //       columnIdx: rowIdx,
+        //       rowIdx: stateManager.columnIdxByCellKeyAndRowIdx(cell.key, rowIdx)
+        //   ),
+        // );
+        stateManager.setCurrentCellPosition(PlutoGridCellPosition(
+          rowIdx: rowIdx,
+          columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(cell.key, rowIdx),
+        ));
         break;
+
     }
 
     stateManager.handleOnSelected();

@@ -129,11 +129,21 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
 
   void _moveDown({required bool focusToPreviousCell}) {
     if (!focusToPreviousCell || stateManager.currentCell == null) {
-      stateManager.setCurrentCell(
-        stateManager.refRows.first.cells[widget.column.field],
-        0,
-        notify: false,
-      );
+      if (!stateManager.mode.isSelectMode) {
+        stateManager.setCurrentCell(
+          stateManager.refRows.first.cells[widget.column.field],
+          0,
+          notify: false,
+        );
+      }
+      else{
+        stateManager.clearCurrentSelecting(notify: false);
+        stateManager.toggleSelectingRow(0);
+        stateManager.setCurrentCellPosition(PlutoGridCellPosition(
+          rowIdx: 0,
+          columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(stateManager.refRows.first.cells[widget.column.field]!.key, 0),
+        ));
+      }
 
       stateManager.scrollByDirection(PlutoMoveDirection.down, 0);
     }

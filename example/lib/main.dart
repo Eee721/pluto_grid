@@ -148,17 +148,25 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
       body: Container(
         padding: const EdgeInsets.all(15),
         child: PlutoGrid(
+          configuration:const PlutoGridConfiguration.dark(
+            style : PlutoGridStyleConfig.dark(
+              activatedColor: Colors.green,
+              selectedRowColor: Colors.red,
+            ),
+          ),
           columns: columns,
           rows: rows,
           columnGroups: columnGroups,
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
             stateManager.setShowColumnFilter(true);
+            stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+            stateManager.setGridMode(PlutoGridMode.multiSelect);
           },
           onChanged: (PlutoGridOnChangedEvent event) {
             print(event);
           },
-          configuration: const PlutoGridConfiguration(),
+          // configuration: const PlutoGridConfiguration(),
         ),
       ),
     );

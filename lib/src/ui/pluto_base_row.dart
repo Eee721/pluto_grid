@@ -264,6 +264,10 @@ class _RowContainerWidgetState extends PlutoStateWithChange<_RowContainerWidget>
       if (checkCurrentRow || checkSelectedRow) {
         color = stateManager.configuration.style.activatedColor;
       }
+
+      if (isFocusedCurrentRow) {
+        color = stateManager.configuration.style.selectedRowColor;
+      }
     }
 
     return isCheckedRow
