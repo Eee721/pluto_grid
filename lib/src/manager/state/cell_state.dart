@@ -218,6 +218,7 @@ mixin CellState implements IPlutoGridState {
   @override
   bool canMoveCell(
       PlutoGridCellPosition? cellPosition, PlutoMoveDirection direction) {
+    if (cellPosition == null) return false;
     switch (direction) {
       case PlutoMoveDirection.left:
         return cellPosition!.columnIdx! > 0;

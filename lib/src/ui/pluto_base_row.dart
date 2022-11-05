@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'ui.dart';
@@ -15,7 +16,7 @@ class PlutoBaseRow extends StatelessWidget {
 
   final bool visibilityLayout;
 
-  const PlutoBaseRow({
+  PlutoBaseRow({
     required this.rowIdx,
     required this.row,
     required this.columns,
@@ -107,8 +108,37 @@ class PlutoBaseRow extends StatelessWidget {
     );
   }
 
+  var bHover = false.obs;
   @override
   Widget build(BuildContext context) {
+    if (stateManager.configuration.style.hoverRowColor != null){
+      var con = DragTarget<PlutoRow>(
+        onWillAccept: _handleOnWillAccept,
+        onAccept: _handleOnAccept,
+        builder: _dragTargetBuilder,
+      );
+      var hover =Obx(()=>MouseRegion(
+          hitTestBehavior: HitTestBehavior.translucent,
+        onHover: (e){
+          bHover.value = true;
+        },
+        onExit: (e){
+          bHover.value = false;
+        },
+        child: IgnorePointer(child: Container(
+          color: bHover.isTrue?stateManager.configuration.style.hoverRowColor:Colors.transparent,
+          // child: con,
+        )),
+      ));
+      // return hover;
+      return Stack(
+        children: [
+          con,
+          hover,
+
+        ],
+      );
+    }
     return DragTarget<PlutoRow>(
       onWillAccept: _handleOnWillAccept,
       onAccept: _handleOnAccept,

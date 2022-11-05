@@ -15,7 +15,7 @@ class PlutoBaseCell extends StatelessWidget
 
   final PlutoGridStateManager stateManager;
 
-  const PlutoBaseCell({
+  PlutoBaseCell({
     Key? key,
     required this.cell,
     required this.column,
@@ -49,11 +49,27 @@ class PlutoBaseCell extends StatelessWidget
     _addGestureEvent(PlutoGridGestureType.onTapUp, details.globalPosition);
   }
 
+  bool _recordDoubleClickBegin = false;
+  void _handleOnTapDown(TapDownDetails details) {
+    // _addGestureEvent(PlutoGridGestureType.onTapUp, details.globalPosition);
+    if (_recordDoubleClickBegin){
+      _addGestureEvent(PlutoGridGestureType.onDoubleTap, details.globalPosition);
+    }
+    if (!_recordDoubleClickBegin){
+      Future.delayed(const Duration(milliseconds: 160)).then((value){
+        _recordDoubleClickBegin = false;
+      });
+    }
+    _recordDoubleClickBegin = true;
+  }
+
   void _handleOnLongPressStart(LongPressStartDetails details) {
     if (stateManager.selectingMode.isNone) {
       return;
     }
-
+    if (stateManager.mode.isMultiSelect) {
+      return;
+    }
     _addGestureEvent(
       PlutoGridGestureType.onLongPressStart,
       details.globalPosition,
@@ -108,12 +124,13 @@ class PlutoBaseCell extends StatelessWidget
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       // Essential gestures.
+      onTapDown: _handleOnTapDown,
       onTapUp: _handleOnTapUp,
       onLongPressStart: _handleOnLongPressStart,
       onLongPressMoveUpdate: _handleOnLongPressMoveUpdate,
       onLongPressEnd: _handleOnLongPressEnd,
       // Optional gestures.
-      onDoubleTap: _onDoubleTapOrNull(),
+      // onDoubleTap: _onDoubleTapOrNull(), //remove for single tap log
       onSecondaryTapDown: _onSecondaryTapOrNull(),
       child: _CellContainer(
         cell: cell,
