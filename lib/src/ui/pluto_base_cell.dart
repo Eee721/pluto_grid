@@ -80,7 +80,9 @@ class PlutoBaseCell extends StatelessWidget
     if (stateManager.selectingMode.isNone) {
       return;
     }
-
+    if (stateManager.mode.isMultiSelect) {
+      return;
+    }
     _addGestureEvent(
       PlutoGridGestureType.onLongPressMoveUpdate,
       details.globalPosition,
@@ -91,7 +93,9 @@ class PlutoBaseCell extends StatelessWidget
     if (stateManager.selectingMode.isNone) {
       return;
     }
-
+    if (stateManager.mode.isMultiSelect) {
+      return;
+    }
     _addGestureEvent(
       PlutoGridGestureType.onLongPressEnd,
       details.globalPosition,
