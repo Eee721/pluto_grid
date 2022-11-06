@@ -169,6 +169,9 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
           onChanged: (PlutoGridOnChangedEvent event) {
             print(event);
           },
+          onBackgroundDoubleTap: (){
+            print("background double click");
+          },
           // configuration: const PlutoGridConfiguration(),
         ),
       ),

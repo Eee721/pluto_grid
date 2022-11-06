@@ -63,6 +63,7 @@ class PlutoGrid extends PlutoStatefulWidget {
     this.onSorted,
     this.onRowChecked,
     this.onRowDoubleTap,
+    this.onBackgroundDoubleTap,
     this.onRowSecondaryTap,
     this.onRowsMoved,
     this.onColumnsMoved,
@@ -178,6 +179,8 @@ class PlutoGrid extends PlutoStatefulWidget {
   /// [onRowDoubleTap] is called when a row is tapped twice in a row.
   /// {@endtemplate}
   final PlutoOnRowDoubleTapEventCallback? onRowDoubleTap;
+
+  final VoidCallback? onBackgroundDoubleTap;
 
   /// {@template pluto_grid_property_onRowSecondaryTap}
   /// [onRowSecondaryTap] is called when a mouse right-click event occurs.
@@ -602,6 +605,7 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
     return _keyManager.eventResult.consume(KeyEventResult.handled);
   }
 
+  bool _recordDoubleClickBegin = false;
   @override
   Widget build(BuildContext context) {
     final style = _stateManager.style;
@@ -623,9 +627,25 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
       child: _GridContainer(
         stateManager: _stateManager,
                 child: GestureDetector(
+                  onTapDown: (e){
+                    // _addGestureEvent(PlutoGridGestureType.onTapUp, details.globalPosition);
+                    if (_recordDoubleClickBegin){
+                      widget.onBackgroundDoubleTap?.call();
+                      // _addGestureEvent(PlutoGridGestureType.onDoubleTap, details.globalPosition);
+                      _recordDoubleClickBegin = false;
+                      return;
+                    }
+                    if (!_recordDoubleClickBegin){
+                      Future.delayed(const Duration(milliseconds: 250)).then((value){
+                        _recordDoubleClickBegin = false;
+                      });
+                    }
+                    _recordDoubleClickBegin = true;
+                  },
                   onTap: () {
                     _stateManager.gridFocusNode.requestFocus();
                   },
+
                   child: CustomMultiChildLayout(
                     key: _stateManager.gridKey,
                     delegate: PlutoGridLayoutDelegate(

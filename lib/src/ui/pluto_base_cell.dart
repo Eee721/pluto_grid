@@ -54,9 +54,11 @@ class PlutoBaseCell extends StatelessWidget
     // _addGestureEvent(PlutoGridGestureType.onTapUp, details.globalPosition);
     if (_recordDoubleClickBegin){
       _addGestureEvent(PlutoGridGestureType.onDoubleTap, details.globalPosition);
+      _recordDoubleClickBegin = false;
+      return;
     }
     if (!_recordDoubleClickBegin){
-      Future.delayed(const Duration(milliseconds: 160)).then((value){
+      Future.delayed(const Duration(milliseconds: 250)).then((value){
         _recordDoubleClickBegin = false;
       });
     }
