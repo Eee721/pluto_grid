@@ -106,6 +106,11 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
   }
 
   void _onSecondaryTap(PlutoGridStateManager stateManager) {
+    if (stateManager.mode.isSelectMode) {
+      _selectMode(stateManager);
+      // return;
+    }
+
     stateManager.onRowSecondaryTap!(
       PlutoGridOnRowSecondaryTapEvent(
         row: stateManager.getRowByIdx(rowIdx)!,

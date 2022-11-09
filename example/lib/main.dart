@@ -1,3 +1,4 @@
+import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const PlutoGridExamplePage(),
+      home: ContextMenuOverlay(child:  PlutoGridExamplePage()),
     );
   }
 }
@@ -148,37 +149,48 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
       body: Container(
         padding: const EdgeInsets.all(15),
         child: PlutoGrid(
-          configuration: PlutoGridConfiguration.dark(
-            style : PlutoGridStyleConfig.dark(
-              activatedColor: Colors.green,
-              hoverRowColor: Colors.red.withAlpha(40),
+          key: UniqueKey(),
+            configuration: PlutoGridConfiguration.dark(
+              style : PlutoGridStyleConfig.dark(
+                activatedColor: Colors.green,
+                hoverRowColor: Colors.red.withAlpha(40),
+              ),
             ),
+            columns: columns,
+            rows: rows,
+            columnGroups: columnGroups,
+            onKeyEvent: (event){
+              print("ctrl :${event.isCtrlPressed} , shift :${event.isShift} , char :${event.isCharacter}");
+              return false;
+            },
+          onRowSecondaryTap: (e){
+
+          },
+            onBackgroundSecondaryTap: (){
+
+              // print("onBackgroundSecondaryTap");
+              // ContextMenuOverlay.of(context).show(Container(
+              //   width: 200,height: 100,color: Colors.redAccent,
+              // ));
+            },
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager.setShowColumnFilter(true);
+              stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+              stateManager.setGridMode(PlutoGridMode.multiSelect);
+            },
+            onRowDoubleTap: (e){
+              print(e.row);
+            },
+            onChanged: (PlutoGridOnChangedEvent event) {
+              print(event);
+            },
+            onBackgroundDoubleTap: (){
+              print("background double click");
+            },
+            // configuration: const PlutoGridConfiguration(),
           ),
-          columns: columns,
-          rows: rows,
-          columnGroups: columnGroups,
-          onKeyEvent: (event){
-            print("ctrl :${event.isCtrlPressed} , shift :${event.isShift} , char :${event.isCharacter}");
-            return false;
-          },
-          onLoaded: (PlutoGridOnLoadedEvent event) {
-            stateManager = event.stateManager;
-            stateManager.setShowColumnFilter(true);
-            stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-            stateManager.setGridMode(PlutoGridMode.multiSelect);
-          },
-          onRowDoubleTap: (e){
-            print(e.row);
-          },
-          onChanged: (PlutoGridOnChangedEvent event) {
-            print(event);
-          },
-          onBackgroundDoubleTap: (){
-            print("background double click");
-          },
-          // configuration: const PlutoGridConfiguration(),
-        ),
-      ),
+        )
     );
   }
 }

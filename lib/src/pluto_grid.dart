@@ -655,6 +655,7 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
           },
           onTap: () {
             _stateManager.gridFocusNode.requestFocus();
+            _stateManager.clearCurrentSelecting();
           },
           child: CustomMultiChildLayout(
             key: _stateManager.gridKey,
