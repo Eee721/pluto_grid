@@ -157,6 +157,10 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
           columns: columns,
           rows: rows,
           columnGroups: columnGroups,
+          onKeyEvent: (event){
+            print("ctrl :${event.isCtrlPressed} , shift :${event.isShift} , char :${event.isCharacter}");
+            return false;
+          },
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
             stateManager.setShowColumnFilter(true);
