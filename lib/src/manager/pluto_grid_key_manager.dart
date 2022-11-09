@@ -77,6 +77,10 @@ class PlutoGridKeyManager {
     stateManager.keyPressed.shift = keyEvent.isShiftPressed;
     stateManager.keyPressed.ctrl = keyEvent.isCtrlPressed;
 
+    if (stateManager.onKeyEvent != null){
+      var used = stateManager.onKeyEvent?.call(keyEvent);
+      if (used!) return ;
+    }
     if (keyEvent.isKeyUpEvent) {
       return;
     }

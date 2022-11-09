@@ -207,6 +207,9 @@ class PlutoGridStateChangeNotifier extends PlutoChangeNotifier
 /// {@endtemplate}
 /// ```
 class PlutoGridStateManager extends PlutoGridStateChangeNotifier {
+
+  final KeyEventCallback? onKeyEvent;
+
   PlutoGridStateManager({
     required super.columns,
     required super.rows,
@@ -228,6 +231,7 @@ class PlutoGridStateManager extends PlutoGridStateChangeNotifier {
     super.notifierFilterResolver,
     super.configuration,
     super.mode,
+    this.onKeyEvent,
   });
 
   PlutoChangeNotifierFilter<T> resolveNotifierFilter<T>() {
