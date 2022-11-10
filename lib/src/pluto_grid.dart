@@ -636,6 +636,7 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
         stateManager: _stateManager,
         child: GestureDetector(
           onSecondaryTap: (){
+            _stateManager.gridFocusNode.requestFocus();
             widget.onBackgroundSecondaryTap?.call();
           },
           onTapDown: (e) {
