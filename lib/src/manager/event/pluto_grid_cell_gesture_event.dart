@@ -107,7 +107,7 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
 
   void _onSecondaryTap(PlutoGridStateManager stateManager) {
     if (stateManager.mode.isSelectMode) {
-      _selectMode(stateManager);
+      _selectMode(stateManager , bSecondaryTap: true);
       // return;
     }
 
@@ -154,7 +154,7 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
     }
   }
 
-  void _selectMode(PlutoGridStateManager stateManager) {
+  void _selectMode(PlutoGridStateManager stateManager , {bool bSecondaryTap = false}) {
     switch (stateManager.mode) {
       case PlutoGridMode.normal:
       case PlutoGridMode.readOnly:
@@ -183,19 +183,19 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
           return ;
         }
 
-        if (!stateManager.keyPressed.ctrl) {
-          stateManager.clearCurrentSelecting(notify: false);
+        if(!bSecondaryTap) {
+          if (!stateManager.keyPressed.ctrl) {
+            stateManager.clearCurrentSelecting(notify: false);
+          }
+          stateManager.toggleSelectingRow(rowIdx);
+        }
+        else{
+          if (!stateManager.isRowSelected(rowIdx)){
+            stateManager.clearCurrentSelecting(notify: false);
+          }
+          stateManager.selectingRow(rowIdx);
         }
 
-
-
-        stateManager.toggleSelectingRow(rowIdx);
-        // stateManager.setCurrentSelectingPosition(
-        //   cellPosition: PlutoGridCellPosition(
-        //       columnIdx: rowIdx,
-        //       rowIdx: stateManager.columnIdxByCellKeyAndRowIdx(cell.key, rowIdx)
-        //   ),
-        // );
         stateManager.setCurrentCellPosition(PlutoGridCellPosition(
           rowIdx: rowIdx,
           columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(cell.key, rowIdx),

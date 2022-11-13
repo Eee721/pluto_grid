@@ -396,6 +396,43 @@ mixin SelectingState implements IPlutoGridState {
     notifyListeners(notify, toggleSelectingRow.hashCode);
   }
 
+  bool isRowSelected(int rowIdx){
+    if (!selectingMode.isRow) {
+      return false;
+    }
+
+    if (rowIdx < 0 || rowIdx > refRows.length - 1) {
+      return false;
+    }
+
+    final PlutoRow row = refRows[rowIdx];
+
+    final keys = Set.from(currentSelectingRows.map((e) => e.key));
+
+    return keys.contains(row.key);
+
+  }
+
+  void selectingRow(int? rowIdx, {notify = true}) {
+    if (!selectingMode.isRow) {
+      return;
+    }
+
+    if (rowIdx == null || rowIdx < 0 || rowIdx > refRows.length - 1) {
+      return;
+    }
+
+    final PlutoRow row = refRows[rowIdx];
+
+    final keys = Set.from(currentSelectingRows.map((e) => e.key));
+
+    if (!keys.contains(row.key)) {
+      currentSelectingRows.add(row);
+    }
+
+    notifyListeners(notify, toggleSelectingRow.hashCode);
+  }
+
   @override
   bool isSelectingInteraction() {
     return !selectingMode.isNone &&
