@@ -37,6 +37,13 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
       title: 'Id',
       field: 'id',
       type: PlutoColumnType.text(),
+      renderer: (r){
+        return TextField(
+          onChanged: (v){
+
+          },
+        );
+      }
     ),
     PlutoColumn(
       title: 'Name',
@@ -163,6 +170,9 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
               print("ctrl :${event.isCtrlPressed} , shift :${event.isShift} , char :${event.isCharacter}");
               return false;
             },
+          onHandleGridFocusOnKey: (n,e){
+            return KeyEventResult.ignored;
+          },
           onRowSecondaryTap: (e){
 
           },

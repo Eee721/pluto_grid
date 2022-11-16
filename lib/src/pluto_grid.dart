@@ -75,6 +75,7 @@ class PlutoGrid extends PlutoStatefulWidget {
     this.createFooter,
     this.noRowsWidget,
     this.onKeyEvent,
+    this.onHandleGridFocusOnKey,
     this.rowColorCallback,
     this.columnMenuDelegate,
     this.configuration = const PlutoGridConfiguration(),
@@ -285,6 +286,7 @@ class PlutoGrid extends PlutoStatefulWidget {
 
 
   final KeyEventCallback? onKeyEvent;
+  final FocusOnKeyCallback? onHandleGridFocusOnKey;
 
   /// {@template pluto_grid_property_rowColorCallback}
   /// [rowColorCallback] can change the row background color dynamically according to the state.
@@ -522,6 +524,7 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
       onRowChecked: widget.onRowChecked,
       onRowDoubleTap: widget.onRowDoubleTap,
       onKeyEvent : widget.onKeyEvent,
+      onHandleGridFocusOnKey: widget.onHandleGridFocusOnKey ,
       onRowSecondaryTap: widget.onRowSecondaryTap,
       onRowsMoved: widget.onRowsMoved,
       onColumnsMoved: widget.onColumnsMoved,
@@ -605,6 +608,7 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
   }
 
   KeyEventResult _handleGridFocusOnKey(FocusNode focusNode, RawKeyEvent event) {
+
     if (_keyManager.eventResult.isSkip == false) {
       _keyManager.subject.add(PlutoKeyManagerEvent(
         focusNode: focusNode,
@@ -631,7 +635,7 @@ class PlutoGridState extends PlutoStateWithChange<PlutoGrid> {
 
     return FocusScope(
       onFocusChange: _stateManager.setKeepFocus,
-      onKey: _handleGridFocusOnKey,
+      onKey: _stateManager.onHandleGridFocusOnKey??_handleGridFocusOnKey,
       child: _GridContainer(
         stateManager: _stateManager,
         child: GestureDetector(

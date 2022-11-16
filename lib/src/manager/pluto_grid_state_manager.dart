@@ -210,6 +210,8 @@ class PlutoGridStateManager extends PlutoGridStateChangeNotifier {
 
   final KeyEventCallback? onKeyEvent;
 
+  final FocusOnKeyCallback? onHandleGridFocusOnKey;
+
   PlutoGridStateManager({
     required super.columns,
     required super.rows,
@@ -232,6 +234,7 @@ class PlutoGridStateManager extends PlutoGridStateChangeNotifier {
     super.configuration,
     super.mode,
     this.onKeyEvent,
+    this.onHandleGridFocusOnKey,
   });
 
   PlutoChangeNotifierFilter<T> resolveNotifierFilter<T>() {
