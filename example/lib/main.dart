@@ -37,13 +37,19 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
       title: 'Id',
       field: 'id',
       type: PlutoColumnType.text(),
-      renderer: (r){
-        return TextField(
-          onChanged: (v){
-
-          },
-        );
-      }
+      // renderer: (r){
+      //   return TextField(
+      //     focusNode: FocusNode(
+      //       onKey: (FocusNode node, RawKeyEvent event){
+      //         print("custom key");
+      //         return KeyEventResult.ignored;
+      //       },
+      //     ),
+      //     onChanged: (v){
+      //
+      //     },
+      //   );
+      // }
     ),
     PlutoColumn(
       title: 'Name',
@@ -152,6 +158,45 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    return Scaffold(
+        body:FocusScope(
+          onKey: (n,e){
+            print("1");
+            return KeyEventResult.ignored;
+          },
+          child: TextField(
+            focusNode: FocusNode(
+              onKey: (n,e){
+                var keyManager = PlutoKeyManagerEvent(
+                  focusNode: n,
+                  event: e,
+                );
+
+                if (keyManager.isKeyUpEvent) {
+                  return KeyEventResult.handled;
+                }
+
+                final skip = !(keyManager.isVertical ||
+                    // _moveHorizontal(keyManager) ||
+                    keyManager.isEsc ||
+                    keyManager.isTab ||
+                    keyManager.isF3 ||
+                    keyManager.isEnter);
+                if (skip) {
+                  return KeyEventResult.ignored;
+                }
+
+                return KeyEventResult.handled;
+              },
+            ),
+            onChanged: (v){
+
+            },
+          ),
+        )
+    );
+
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(15),
@@ -170,9 +215,9 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
               print("ctrl :${event.isCtrlPressed} , shift :${event.isShift} , char :${event.isCharacter}");
               return false;
             },
-          onHandleGridFocusOnKey: (n,e){
-            return KeyEventResult.ignored;
-          },
+          // onHandleGridFocusOnKey: (n,e){
+          //   return KeyEventResult.ignored;
+          // },
           onRowSecondaryTap: (e){
 
           },
@@ -186,8 +231,8 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
-              stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-              stateManager.setGridMode(PlutoGridMode.multiSelect);
+              // stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+              // stateManager.setGridMode(PlutoGridMode.multiSelect);
             },
             onRowDoubleTap: (e){
               print(e.row);
