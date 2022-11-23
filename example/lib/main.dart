@@ -142,6 +142,8 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
     ),
   ];
 
+
+
   /// columnGroups that can group columns can be omitted.
   final List<PlutoColumnGroup> columnGroups = [
     PlutoColumnGroup(title: 'Id', fields: ['id'], expandedColumn: true),
@@ -158,44 +160,58 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-        body:FocusScope(
-          onKey: (n,e){
-            print("1");
-            return KeyEventResult.ignored;
+    for(int i = 100 ; i < 200 ;++i){
+      rows.add(
+        PlutoRow(
+          cells: {
+            'id': PlutoCell(value: 'user $i'),
+            'name': PlutoCell(value: 'Suzi'),
+            'age': PlutoCell(value: 40),
+            'role': PlutoCell(value: 'Owner'),
+            'joined': PlutoCell(value: '2021-03-01'),
+            'working_time': PlutoCell(value: '11:00'),
+            'salary': PlutoCell(value: 700),
           },
-          child: TextField(
-            focusNode: FocusNode(
-              onKey: (n,e){
-                var keyManager = PlutoKeyManagerEvent(
-                  focusNode: n,
-                  event: e,
-                );
-
-                if (keyManager.isKeyUpEvent) {
-                  return KeyEventResult.handled;
-                }
-
-                final skip = !(keyManager.isVertical ||
-                    // _moveHorizontal(keyManager) ||
-                    keyManager.isEsc ||
-                    keyManager.isTab ||
-                    keyManager.isF3 ||
-                    keyManager.isEnter);
-                if (skip) {
-                  return KeyEventResult.ignored;
-                }
-
-                return KeyEventResult.handled;
-              },
-            ),
-            onChanged: (v){
-
-            },
-          ),
-        )
-    );
+        ),
+      );
+    }
+    // return Scaffold(
+    //     body:FocusScope(
+    //       onKey: (n,e){
+    //         print("1");
+    //         return KeyEventResult.ignored;
+    //       },
+    //       child: TextField(
+    //         focusNode: FocusNode(
+    //           onKey: (n,e){
+    //             var keyManager = PlutoKeyManagerEvent(
+    //               focusNode: n,
+    //               event: e,
+    //             );
+    //
+    //             if (keyManager.isKeyUpEvent) {
+    //               return KeyEventResult.handled;
+    //             }
+    //
+    //             final skip = !(keyManager.isVertical ||
+    //                 // _moveHorizontal(keyManager) ||
+    //                 keyManager.isEsc ||
+    //                 keyManager.isTab ||
+    //                 keyManager.isF3 ||
+    //                 keyManager.isEnter);
+    //             if (skip) {
+    //               return KeyEventResult.ignored;
+    //             }
+    //
+    //             return KeyEventResult.handled;
+    //           },
+    //         ),
+    //         onChanged: (v){
+    //
+    //         },
+    //       ),
+    //     )
+    // );
 
     return Scaffold(
       body: Container(
@@ -231,8 +247,8 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
-              // stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-              // stateManager.setGridMode(PlutoGridMode.multiSelect);
+              stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+              stateManager.setGridMode(PlutoGridMode.multiSelect);
             },
             onRowDoubleTap: (e){
               print(e.row);
