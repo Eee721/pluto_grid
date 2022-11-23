@@ -377,6 +377,11 @@ class PlutoGridKeyManager {
       return;
     }
 
+    if (!stateManager.isCellSelectable){
+      stateManager.clearCurrentSelecting(notify: false);
+      stateManager.clearCurrentCell(notify: true);
+    }
+
     if (currentColumn.filterFocusNode?.canRequestFocus == true) {
       currentColumn.filterFocusNode?.requestFocus();
       stateManager.setKeepFocus(false);
@@ -388,6 +393,8 @@ class PlutoGridKeyManager {
       keyEvent.focusNode.context!,
       calledColumn: stateManager.currentColumn,
     );
+
+
   }
 
   void _handleF4(PlutoKeyManagerEvent keyEvent) {
