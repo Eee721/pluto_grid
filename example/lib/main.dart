@@ -247,6 +247,8 @@ class _PlutoGridExamplePageState extends State<PlutoGridExamplePage> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager.setShowColumnFilter(true);
+              // stateManager.setSelecting(flag)
+              stateManager.setCellSelectable(false);
               stateManager.setSelectingMode(PlutoGridSelectingMode.row);
               stateManager.setGridMode(PlutoGridMode.multiSelect);
             },

@@ -76,6 +76,12 @@ class _State {
 }
 
 mixin CellState implements IPlutoGridState {
+
+  bool cellSelectable = true;
+  void setCellSelectable(bool bSelectable) {
+    cellSelectable = bSelectable;
+  }
+
   final _State _state = _State();
 
   @override
@@ -208,7 +214,9 @@ mixin CellState implements IPlutoGridState {
       columnIdx: columnIdxByCellKeyAndRowIdx(cell.key, rowIdx),
     );
 
-    clearCurrentSelecting(notify: false);
+    if (isCellSelectable) {
+      clearCurrentSelecting(notify: false);
+    }
 
     setEditing(autoEditing, notify: false);
 

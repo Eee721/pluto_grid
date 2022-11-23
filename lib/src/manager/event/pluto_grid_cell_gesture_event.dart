@@ -155,6 +155,40 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
   }
 
   void _selectMode(PlutoGridStateManager stateManager , {bool bSecondaryTap = false}) {
+    if (!stateManager.cellSelectable){
+      if (stateManager.keyPressed.shift) {
+        final int? columnIdx = stateManager.columnIndex(column);
+
+        stateManager.setCurrentSelectingPosition(
+          cellPosition: PlutoGridCellPosition(
+            columnIdx: columnIdx,
+            rowIdx: rowIdx,
+          ),
+        );
+        return ;
+      }
+
+      if(!bSecondaryTap) {
+        if (!stateManager.keyPressed.ctrl) {
+          stateManager.clearCurrentSelecting(notify: false);
+        }
+        stateManager.toggleSelectingRow(rowIdx);
+      }
+      else{
+        if (!stateManager.isRowSelected(rowIdx)){
+          stateManager.clearCurrentSelecting(notify: false);
+        }
+        stateManager.selectingRow(rowIdx);
+      }
+      stateManager.setCurrentCell(cell, rowIdx);
+      stateManager.setCurrentCellPosition(PlutoGridCellPosition(
+        rowIdx: rowIdx,
+        columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(cell.key, rowIdx),
+      ));
+
+      stateManager.handleOnSelected();
+      return;
+    }
     switch (stateManager.mode) {
       case PlutoGridMode.normal:
       case PlutoGridMode.readOnly:
@@ -171,37 +205,8 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
         }
         break;
       case PlutoGridMode.multiSelect:
-        if (stateManager.keyPressed.shift) {
-          final int? columnIdx = stateManager.columnIndex(column);
-
-          stateManager.setCurrentSelectingPosition(
-            cellPosition: PlutoGridCellPosition(
-              columnIdx: columnIdx,
-              rowIdx: rowIdx,
-            ),
-          );
-          return ;
-        }
-
-        if(!bSecondaryTap) {
-          if (!stateManager.keyPressed.ctrl) {
-            stateManager.clearCurrentSelecting(notify: false);
-          }
-          stateManager.toggleSelectingRow(rowIdx);
-        }
-        else{
-          if (!stateManager.isRowSelected(rowIdx)){
-            stateManager.clearCurrentSelecting(notify: false);
-          }
-          stateManager.selectingRow(rowIdx);
-        }
-
-        stateManager.setCurrentCellPosition(PlutoGridCellPosition(
-          rowIdx: rowIdx,
-          columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(cell.key, rowIdx),
-        ));
+        stateManager.toggleSelectingRow(rowIdx);
         break;
-
     }
 
     stateManager.handleOnSelected();

@@ -12,6 +12,8 @@ abstract class IGridState {
 
   PlutoGridMode get mode;
 
+  bool get isCellSelectable;
+
   PlutoOnChangedEventCallback? get onChanged;
 
   PlutoOnSelectedEventCallback? get onSelected;

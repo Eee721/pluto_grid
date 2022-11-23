@@ -98,7 +98,8 @@ class PlutoGridStateChangeNotifier extends PlutoChangeNotifier
     setGridMode(mode ?? PlutoGridMode.normal);
     _initialize();
   }
-
+  @override
+  bool get isCellSelectable => cellSelectable;
   @override
   final FilteredList<PlutoColumn> refColumns;
 
@@ -211,6 +212,8 @@ class PlutoGridStateManager extends PlutoGridStateChangeNotifier {
   final KeyEventCallback? onKeyEvent;
 
   final FocusOnKeyCallback? onHandleGridFocusOnKey;
+
+
 
   PlutoGridStateManager({
     required super.columns,
@@ -384,6 +387,8 @@ class PlutoGridStateManager extends PlutoGridStateChangeNotifier {
 
     return completer.future;
   }
+
+
 }
 
 /// This is a class for handling horizontal and vertical scrolling of columns and rows of [PlutoGrid].

@@ -223,7 +223,7 @@ mixin SelectingState implements IPlutoGridState {
         );
         break;
       case PlutoGridSelectingMode.row:
-        if (currentCell == null && !mode.isSelectMode) {
+        if (currentCell == null && isCellSelectable) {
           _setFistCellAsCurrent();
         }
 

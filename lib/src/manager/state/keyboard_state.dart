@@ -257,6 +257,7 @@ mixin KeyboardState implements IPlutoGridState {
       return;
     }
 
+
     setCurrentSelectingPosition(
       cellPosition: PlutoGridCellPosition(
         columnIdx: cellPosition!.columnIdx! +
@@ -361,7 +362,7 @@ mixin KeyboardState implements IPlutoGridState {
       rowIdx = refRows.length - 1;
     }
 
-    if (currentCell == null && !mode.isSelectMode) {
+    if (currentCell == null && isCellSelectable) {
       return;
     }
 

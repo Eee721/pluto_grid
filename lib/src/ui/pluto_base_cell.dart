@@ -206,32 +206,34 @@ class _CellContainerState extends PlutoStateWithChange<_CellContainer> {
 
     final isCurrentCell = stateManager.isCurrentCell(widget.cell);
 
-    _decoration = update(
-      _decoration,
-      _boxDecoration(
-        hasFocus: stateManager.hasFocus,
-        readOnly: widget.column.checkReadOnly(widget.row, widget.cell),
-        isEditing: stateManager.isEditing,
-        isCurrentCell: isCurrentCell,
-        isSelectedCell: stateManager.isSelectedCell(
-          widget.cell,
-          widget.column,
-          widget.rowIdx,
+    if (stateManager.isCellSelectable) {
+      _decoration = update(
+        _decoration,
+        _boxDecoration(
+          hasFocus: stateManager.hasFocus,
+          readOnly: widget.column.checkReadOnly(widget.row, widget.cell),
+          isEditing: stateManager.isEditing,
+          isCurrentCell: isCurrentCell,
+          isSelectedCell: stateManager.isSelectedCell(
+            widget.cell,
+            widget.column,
+            widget.rowIdx,
+          ),
+          isGroupedRowCell: stateManager.enabledRowGroups &&
+              stateManager.rowGroupDelegate!.isExpandableCell(widget.cell),
+          enableCellVerticalBorder: style.enableCellBorderVertical,
+          borderColor: style.borderColor,
+          activatedBorderColor: style.activatedBorderColor,
+          activatedColor: style.activatedColor,
+          inactivatedBorderColor: style.inactivatedBorderColor,
+          gridBackgroundColor: style.gridBackgroundColor,
+          cellColorInEditState: style.cellColorInEditState,
+          cellColorInReadOnlyState: style.cellColorInReadOnlyState,
+          cellColorGroupedRow: style.cellColorGroupedRow,
+          selectingMode: stateManager.selectingMode,
         ),
-        isGroupedRowCell: stateManager.enabledRowGroups &&
-            stateManager.rowGroupDelegate!.isExpandableCell(widget.cell),
-        enableCellVerticalBorder: style.enableCellBorderVertical,
-        borderColor: style.borderColor,
-        activatedBorderColor: style.activatedBorderColor,
-        activatedColor: style.activatedColor,
-        inactivatedBorderColor: style.inactivatedBorderColor,
-        gridBackgroundColor: style.gridBackgroundColor,
-        cellColorInEditState: style.cellColorInEditState,
-        cellColorInReadOnlyState: style.cellColorInReadOnlyState,
-        cellColorGroupedRow: style.cellColorGroupedRow,
-        selectingMode: stateManager.selectingMode,
-      ),
-    );
+      );
+    }
   }
 
   Color? _currentCellColor({

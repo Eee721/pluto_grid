@@ -129,7 +129,7 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
 
   void _moveDown({required bool focusToPreviousCell}) {
     if (!focusToPreviousCell || stateManager.currentCell == null) {
-      if (!stateManager.mode.isSelectMode) {
+      if (stateManager.isCellSelectable) {
         stateManager.setCurrentCell(
           stateManager.refRows.first.cells[widget.column.field],
           0,
@@ -143,6 +143,12 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
           rowIdx: 0,
           columnIdx: stateManager.columnIdxByCellKeyAndRowIdx(stateManager.refRows.first.cells[widget.column.field]!.key, 0),
         ));
+
+        stateManager.setCurrentCell(
+          stateManager.refRows.first.cells[widget.column.field],
+          0,
+          notify: false,
+        );
       }
 
       stateManager.scrollByDirection(PlutoMoveDirection.down, 0);
@@ -221,6 +227,9 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
 
       if (isCurrentColumn) {
         stateManager.clearCurrentCell(notify: false);
+        if (!stateManager.isCellSelectable){
+          stateManager.clearCurrentSelecting(notify: false);
+        }
         stateManager.setKeepFocus(false);
         _focusNode.requestFocus();
       }
