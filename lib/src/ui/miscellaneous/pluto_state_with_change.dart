@@ -148,7 +148,7 @@ mixin PlutoStateWithKeepAlive<T extends StatefulWidget>
   }
 
   void _releaseKeepAlive() {
-    _keepAliveHandle!.release();
+    // _keepAliveHandle!.release();
     _keepAliveHandle = null;
   }
 }
